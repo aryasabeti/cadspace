@@ -34,11 +34,11 @@ function initialize() {
     // vRight = viewerRight;
 
     Autodesk.Viewing.Initializer(options, function() {
-        viewerLeft.initialize();
-        viewerRight.initialize();
+        vLeft.initialize();
+        vRight.initialize();
         console.log(["URN", options.document]);
-        loadDocument(viewerLeft, options.document);
-        loadDocument(viewerRight, options.document);
+        loadDocument(vLeft, options.document);
+        loadDocument(vRight, options.document);
     });
 
 };
