@@ -109,7 +109,7 @@ function setNewLook(coords) {
 
     camLeft.position.set( coords['roll'], coords['pitch'], coords['yaw'] );
     camLeft.lookAt( vLeft.navigation.getPosition() );
-    vLeft.updateMatrix();
+    camLeft.updateMatrix();
  //    var zAxis = new THREE.Vector3(0, 0, 1);
 	// var position = new vLeft.navigation.getPosition();
 	// var newPosition = new THREE.Vector3(coords['roll'], coords['pitch'], coords['yaw']).normalize();
