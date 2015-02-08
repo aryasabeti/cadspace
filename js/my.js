@@ -1,4 +1,4 @@
-var vLeft, vRight;
+var vLeft, vRight, controls;
 
 function loadDocument(viewer, documentId) {
     // Find the first 3d geometry and load that.
@@ -15,7 +15,20 @@ function loadDocument(viewer, documentId) {
     }, function(errorMsg) { // onErrorCallback
         alert("Load Error: " + errorMsg);
     });
-}
+};
+
+function myInit() {
+    initialize();
+    initWebSocket();
+    controls = new THREE.TrackballControls( vLeft.navigation.getCamera() );
+    console.log(['CONTROLS',controls]);
+    controls.rotateSpeed = 1.0;
+    controls.noZoom = true;
+    controls.noPan = true;
+    controls.staticMoving = true;
+    controls.dynamicDampingFactor = 0.3;
+
+};
 
 function initialize() {
     var options = {
@@ -49,12 +62,6 @@ function getToken() {
     xmlHttp.open("GET", "http://still-spire-1606.herokuapp.com/api/token", false);
     xmlHttp.send(null);
     return xmlHttp.responseText;
-};
-
-function myInit() {
-    initialize();
-    // WebSocketTest();
-    initWebSocket();
 };
 
 function WebSocketTest() {
@@ -108,11 +115,13 @@ function setNewLook(coords) {
     var camLeft = vLeft.navigation.getCamera();
     var camRight = vRight.navigation.getCamera();
 
-    var zAxis = new THREE.Vector3(0, 0, 1);
-	var position = new vLeft.navigation.getPosition();
-	var newPosition = new THREE.Vector3(coords['roll'], coords['pitch'], coords['yaw']).normalize();
-	
-    console.log(newPosition);
-	var target = vLeft.navigation.getTarget();
+ //    var zAxis = new THREE.Vector3(0, 0, 1);
+	// var position = new vLeft.navigation.getPosition();
+	// var newPosition = new THREE.Vector3(coords['roll'], coords['pitch'], coords['yaw']).normalize();
+	controls.rotateCamera(new THREE.Vector3(coords['roll'], coords['pitch'], coords['yaw']), new THREE.Quaternion());
+    controls.update();
+ //    camLeft.position.x = 
+ //    console.log(newPosition);
+	// var target = vLeft.navigation.getTarget();
 
 }
