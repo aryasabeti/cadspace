@@ -1,4 +1,5 @@
 var vLeft, vRight;
+var CAM = 
 
 function loadDocument(viewer, documentId) {
     // Find the first 3d geometry and load that.
@@ -105,10 +106,17 @@ function initWebSocket() {
 };
 
 function setNewLook(coords) {
+    var camLeft = vLeft.navigation.getCamera();
+    var camRight = vRight.navigation.getCamera();
+    var zAxis = new THREE.Vector3(0, 0, 1);
 	var position = new vLeft.navigation.getPosition();
-    console.log(coords);
-	var newPosition = new THREE.Vector3(coords['roll'], coords['pitch'], coords['yaw']);
-	console.log(newPosition);
+	var newPosition = new THREE.Vector3(coords['roll'], coords['pitch'], coords['yaw']).normalize();
+	
+    camLeft.position.x = coords['roll'];
+
+    camLeft.updateMatrix();
+
+    console.log(newPosition);
 	var target = vLeft.navigation.getTarget();
 
 }
