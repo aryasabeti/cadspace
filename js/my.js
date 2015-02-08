@@ -25,11 +25,13 @@ function initialize() {
         'refreshToken': getToken,
     };
     var viewerElement = document.getElementById('viewerLeft');
-    var viewerLeft = new Autodesk.Viewing.Viewer3D(viewerElement, {});
+    // var viewerLeft = new Autodesk.Viewing.Viewer3D(viewerElement, {});
+    vLeft = new Autodesk.Viewing.Viewer3D(viewerElement, {});
     viewerElement = document.getElementById('viewerRight');
-    var viewerRight = new Autodesk.Viewing.Viewer3D(viewerElement, {});
-    vLeft = viewerLeft;
-    vRight = viewerRight;
+    // var viewerRight = new Autodesk.Viewing.Viewer3D(viewerElement, {});
+    vRight = new Autodesk.Viewing.Viewer3D(viewerElement, {});
+    // vLeft = viewerLeft;
+    // vRight = viewerRight;
 
     Autodesk.Viewing.Initializer(options, function() {
         viewerLeft.initialize();
