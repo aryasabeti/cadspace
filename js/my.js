@@ -112,6 +112,8 @@ function setNewLook(coords) {
     // camLeft.updateMatrix();
     
     vLeft.navigation.setView(new THREE.Vector3(coords['roll'], coords['pitch'], coords['yaw']), vLeft.navigation.getTarget());
+    vRight.navigation.setView(new THREE.Vector3(coords['roll'], coords['pitch'], coords['yaw']), vLeft.navigation.getTarget());
+
     // vLeft.navigation.updateCamera();
     // vLeft.impl.applyCamer
 
