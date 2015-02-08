@@ -55,7 +55,6 @@ function myInit() {
     initialize();
     // WebSocketTest();
     initWebSocket();
-    initControls();
 };
 
 function WebSocketTest() {
@@ -98,12 +97,18 @@ function initWebSocket() {
 
     // Log messages from the server
     connection.onmessage = function(e) {
-        console.log('Server: ' + e.data);
+        // console.log('Server: ' + e.data);
+        setNewLook(JSON.parse(e.data));
     };
 
     // connection.send('your message');
 };
 
-function initControls() {
-	console.log("asdf");
+function setNewLook(coords) {
+	var position = new vLeft.navigation.getPosition();
+    console.log(coords);
+	var newPosition = new THREE.Vector3(coords['roll'], coords['pitch'], coords['yaw']);
+	console.log(newPosition);
+	var target = vLeft.navigation.getTarget();
+
 }
