@@ -107,9 +107,14 @@ function setNewLook(coords) {
     var camLeft = vLeft.navigation.getCamera();
     var camRight = vRight.navigation.getCamera();
 
-    camLeft.position.set( coords['roll'], coords['pitch'], coords['yaw'] );
-    camLeft.lookAt( vLeft.navigation.getPosition() );
-    camLeft.updateMatrix();
+    // camLeft.position.set( coords['roll'], coords['pitch'], coords['yaw'] );
+    // camLeft.lookAt( vLeft.navigation.getPosition() );
+    // camLeft.updateMatrix();
+    
+    vLeft.navigation.setView(new THREE.Vector3(coords['roll'], coords['pitch'], coords['yaw']), vLeft.navigation.getTarget());
+    // vLeft.navigation.updateCamera();
+    // vLeft.impl.applyCamer
+
  //    var zAxis = new THREE.Vector3(0, 0, 1);
 	// var position = new vLeft.navigation.getPosition();
 	// var newPosition = new THREE.Vector3(coords['roll'], coords['pitch'], coords['yaw']).normalize();
