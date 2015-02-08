@@ -28,6 +28,8 @@ function initialize() {
     var viewerLeft = new Autodesk.Viewing.Viewer3D(viewerElement, {});
     viewerElement = document.getElementById('viewerRight');
     var viewerRight = new Autodesk.Viewing.Viewer3D(viewerElement, {});
+    vLeft = viewerLeft;
+    vRight = viewerRight;
 
     Autodesk.Viewing.Initializer(options, function() {
         viewerLeft.initialize();
