@@ -1,47 +1,105 @@
-	function loadDocument(viewer, documentId) {
-	    // Find the first 3d geometry and load that.
-	    Autodesk.Viewing.Document.load(documentId, function(doc) {// onLoadCallback
-	    var geometryItems = [];
-	    geometryItems = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {
-	        'type' : 'geometry',
-	        'role' : '3d'
-	    }, true);
+var vLeft, vRight;
 
-	    if (geometryItems.length > 0) {
-	        viewer.load(doc.getViewablePath(geometryItems[0]));
-	    }
-	 }, function(errorMsg) {// onErrorCallback
-	    alert("Load Error: " + errorMsg);
-	    });
-	}
+function loadDocument(viewer, documentId) {
+    // Find the first 3d geometry and load that.
+    Autodesk.Viewing.Document.load(documentId, function(doc) { // onLoadCallback
+        var geometryItems = [];
+        geometryItems = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {
+            'type': 'geometry',
+            'role': '3d'
+        }, true);
 
-	function initialize(viewerID) {
-	    var options = {
-	        'document' : 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6YXJpYS1idWNrZXQvUm9ib3RBcm0xLmR3Zng=',
-	        'env':'AutodeskProduction',
-	        'getAccessToken': getToken,
-	        'refreshToken': getToken,
-	        };
-	    var viewerElement = document.getElementById(viewerID);
-	    var viewer = new Autodesk.Viewing.Viewer3D(viewerElement, {});
+        if (geometryItems.length > 0) {
+            viewer.load(doc.getViewablePath(geometryItems[0]));
+        }
+    }, function(errorMsg) { // onErrorCallback
+        alert("Load Error: " + errorMsg);
+    });
+}
 
-	    Autodesk.Viewing.Initializer(options, function() {
-	        viewer.initialize();
-	        var u = options.document.urn;
-	        console.log(["URN", options.document]);
-	        loadDocument(viewer, options.document);
-	    });
-	};
+function initialize() {
+    var options = {
+        'document': 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6YXJpYS1idWNrZXQvUm9ib3RBcm0xLmR3Zng=',
+        'env': 'AutodeskProduction',
+        'getAccessToken': getToken,
+        'refreshToken': getToken,
+    };
+    var viewerElement = document.getElementById('viewerLeft');
+    var viewerLeft = new Autodesk.Viewing.Viewer3D(viewerElement, {});
+    viewerElement = document.getElementById('viewerRight');
+    var viewerRight = new Autodesk.Viewing.Viewer3D(viewerElement, {});
 
-	function getToken() {
-        var xmlHttp = null;
-        xmlHttp = new XMLHttpRequest();
-        xmlHttp.open( "GET", "http://still-spire-1606.herokuapp.com/api/token", false );
-        xmlHttp.send( null );
-        return xmlHttp.responseText;
+    Autodesk.Viewing.Initializer(options, function() {
+        viewerLeft.initialize();
+        viewerRight.initialize();
+        console.log(["URN", options.document]);
+        loadDocument(viewerLeft, options.document);
+        loadDocument(viewerRight, options.document);
+    });
+
+};
+
+function getToken() {
+    var xmlHttp = null;
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", "http://still-spire-1606.herokuapp.com/api/token", false);
+    xmlHttp.send(null);
+    return xmlHttp.responseText;
+};
+
+function myInit() {
+    initialize();
+    // WebSocketTest();
+    initWebSocket();
+    initControls();
+};
+
+function WebSocketTest() {
+    if ("WebSocket" in window) {
+        console.log("WebSocket is supported by your Browser!");
+        // Let us open a web socket
+        var ws = new WebSocket("ws://localhost:9998/echo");
+        ws.onopen = function() {
+            // Web Socket is connected, send data using send()
+            ws.send("Message to send");
+            console.log("Message is sent...");
+        };
+        ws.onmessage = function(evt) {
+            var received_msg = evt.data;
+            console.log("Message is received...");
+        };
+        ws.onclose = function() {
+            // websocket is closed.
+            console.log("Connection is closed...");
+        };
+    } else {
+        // The browser doesn't support WebSocket
+        console.log("WebSocket NOT supported by your Browser!");
+    }
+}
+
+function initWebSocket() {
+    var connection = new WebSocket('ws://cad-view.mybluemix.net/ws/awesome');
+    console.log("new connection");
+    // When the connection is open, send some data to the server
+    connection.onopen = function() {
+        console.log("connection opened");
+        connection.send('Ping'); // Send the message 'Ping' to the server
     };
 
-    function myInit() {
-    	initialize('viewerLeft');
-		initialize('viewerRight');
+    // Log errors
+    connection.onerror = function(error) {
+        console.log('WebSocket Error ' + error);
     };
+
+    // Log messages from the server
+    connection.onmessage = function(e) {
+        console.log('Server: ' + e.data);
+    };
+
+    // connection.send('your message');
+};
+
+function initControls() {
+	console.log("asdf");
+}
