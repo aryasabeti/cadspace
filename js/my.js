@@ -20,14 +20,6 @@ function loadDocument(viewer, documentId) {
 function myInit() {
     initialize();
     initWebSocket();
-    controls = new THREE.TrackballControls( vLeft.navigation.getCamera() );
-    console.log(['CONTROLS',controls]);
-    controls.rotateSpeed = 1.0;
-    controls.noZoom = true;
-    controls.noPan = true;
-    controls.staticMoving = true;
-    controls.dynamicDampingFactor = 0.3;
-
 };
 
 function initialize() {
@@ -115,11 +107,11 @@ function setNewLook(coords) {
     var camLeft = vLeft.navigation.getCamera();
     var camRight = vRight.navigation.getCamera();
 
+    camLeft.position.set( coords['roll'], coords['pitch'], coords['yaw'] );
+    camLeft.lookAt( vLeft.navigation.getPosition() );
  //    var zAxis = new THREE.Vector3(0, 0, 1);
 	// var position = new vLeft.navigation.getPosition();
 	// var newPosition = new THREE.Vector3(coords['roll'], coords['pitch'], coords['yaw']).normalize();
-	controls.rotateCamera(new THREE.Vector3(coords['roll'], coords['pitch'], coords['yaw']), new THREE.Quaternion());
-    controls.update();
  //    camLeft.position.x = 
  //    console.log(newPosition);
 	// var target = vLeft.navigation.getTarget();
